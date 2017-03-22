@@ -1,0 +1,1321 @@
+﻿<Window x:Class="WindowsCalender.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:WindowsCalender.WindowsCalender"
+    Title="Nepali Calender" Height="326" Width="290"  WindowStartupLocation="CenterScreen" 
+    AllowsTransparency="True" Topmost="True" WindowStyle="None" ResizeMode="NoResize" Foreground="White" Icon="Images/Icondrawer-Flags-Nepal.ico" ShowInTaskbar="False">
+    <Window.Resources>
+        <Storyboard x:Key="flyinStoryboard">
+            <DoubleAnimation From="{Binding Location.FromLeft}" To="{Binding Location.ToLeft}"
+                    Storyboard.TargetProperty="(Window.Left)" Duration="0:0:1"></DoubleAnimation>
+            <DoubleAnimation From="{Binding Location.FromTop}" To="{Binding Location.ToTop}"
+                    Storyboard.TargetProperty="(Window.Top)" Duration="0:0:1"></DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="fadeInfadeOutStoryboard">
+            <DoubleAnimation Storyboard.TargetProperty="(Window.Opacity)" From="0.0" To="1.0" AutoReverse="False"
+                    AccelerationRatio="0.8" Duration="0:0:01"></DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Key="MouseHoverStoryBoard">
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Bd" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00.25" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="MouseLeaveStoryBoard">
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Bd" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00.25" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard x:Key="TextZoomIn" Duration="00:00:001">
+            <DoubleAnimation Storyboard.TargetName="DateofToday" From="16" To="20" Storyboard.TargetProperty="FontSize"/>
+        </Storyboard>
+        <Storyboard x:Key="TextZoomOut" Duration="00:00:001">
+            <DoubleAnimation Storyboard.TargetName="DateofToday" From="20" To="16" Storyboard.TargetProperty="FontSize"/>
+        </Storyboard>
+
+
+        <Style x:Key ="OPGrid" TargetType="{x:Type Grid}">
+            <Setter Property="Background">
+                <Setter.Value >
+                    <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                        <GradientStop Color="#00AAAAAA" Offset="0"/>
+                        <GradientStop Color="#77AAAAAA" Offset="0.5"/>
+                        <GradientStop Color="#00AAAAAA" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="1" BlurRadius="5" Color="Black" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key ="mnuGrid" TargetType="{x:Type Grid}">
+            <Setter Property="Background">
+                <Setter.Value >
+                    <LinearGradientBrush EndPoint="0.01,0" StartPoint="0,0">
+                        <GradientStop Color="#00AAAAAA" Offset="0"/>
+                        <GradientStop Color="#77AAAAAA" Offset=".3"/>
+                        <GradientStop Color="#00AAAAAA" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="1" BlurRadius="1" Color="Black" />
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ButtonWeak" TargetType="{x:Type Button}">
+            <Setter Property="Template" Value="{StaticResource BtnWeek}" />
+        </Style>
+        <Style x:Key="StealthButton1" TargetType="{x:Type Button}">
+            <Setter Property="Template" Value="{StaticResource BtnDays}"/>
+        </Style>
+        <Style x:Key="EngBtn" TargetType="{x:Type Button}">
+            <Setter Property="Template" Value="{StaticResource BtnEDays}"/>
+        </Style>
+        <Style x:Key="EHoliday" TargetType="{x:Type Button}">
+            <Setter Property="Template" Value="{StaticResource BtnEHoliday}"/>
+        </Style>
+        <Style x:Key="ButtonSaturday" TargetType="{x:Type Button}">
+            <Setter Property="Template" Value="{StaticResource BtnHoliday}"/>
+        </Style>
+        <Style x:Key="ButtonSatWeek" TargetType="{x:Type Button}">
+            <Setter Property="Template" Value="{StaticResource BtnHolidayWeek}"/>
+        </Style>
+        <Style x:Key="ButtonCurDay" TargetType="{x:Type Button}">
+            <Setter Property="Template" Value="{StaticResource BtnCurrentDays}"/>
+        </Style>
+        <Style x:Key="ButtonCurEngDay" TargetType="{x:Type Button}">
+            <Setter Property="Template" Value="{StaticResource BtnCurrentEDays}"/>
+        </Style>
+        <Style x:Key="MoveBackWard" TargetType="{x:Type Button}">
+            <Setter Property="Template" Value="{StaticResource MoveBack}"/>
+        </Style>
+
+        <LinearGradientBrush x:Key="PanelGradiantBrush1" EndPoint="1,0.5" StartPoint="0,0.5">
+            <GradientStop Color="#FF010101" Offset="0"/>
+            <GradientStop Color="#FF010101" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush  x:Key="PanelGradiantBrush" EndPoint="1,0.5" StartPoint="0,0.5">
+            <GradientStop Color="#00AAAAAA" Offset="0"/>
+            <GradientStop Color="#77AAAAAA" Offset="0.5"/>
+            <GradientStop Color="#00AAAAAA" Offset="1"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush  x:Key="red" EndPoint="1,0.5" StartPoint="0,0.5">
+            <GradientStop Color="#FFFF1111" Offset="0"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="ButtonMenu" EndPoint=".1,.0" StartPoint=".1,3">
+            <GradientStop Color="#FF111111" Offset="0"/>
+            <GradientStop Color="#FF111111" Offset="0.5"/>
+            <GradientStop Color="#FF111111" Offset="1"/>
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="BorderBrush" Color="#FF747474"/>
+        <ControlTemplate x:Key="MenuSetting" TargetType="{x:Type Button}">
+            <ControlTemplate.Resources>
+                <Storyboard x:Key="MouseOverButtonEffect">
+                    <ThicknessAnimation Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="(Control.Margin)"
+                     Duration="0:0:0.05" FillBehavior="Stop" From="0,0,0,0" To="4,4,4,4" AutoReverse="True" />
+                </Storyboard>
+            </ControlTemplate.Resources>
+            <Grid x:Name="StealthButtonOuterGrid1">
+                <Border x:Name="ButtonBorder" CornerRadius="0,0,0,0" Margin="0,0,0,0" Background="Transparent" Opacity=".01" BorderThickness="1" BorderBrush="Black">
+                </Border>
+                <Border x:Name="ButtonBorderFill" CornerRadius="0,0,0,0" Margin="0,0,0,0" Opacity=".01" BorderThickness="1">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint=".1,.0" StartPoint=".1,3">
+                            <GradientStop Color="#FF333333" Offset="0"/>
+                            <GradientStop Color="#FF333333" Offset="0.5"/>
+                            <GradientStop Color="#FF333333" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                </Border>
+                <Border CornerRadius="0,0,0,0" Margin="0,0,0,0" Opacity="1">
+                    <Border.Background >
+                        <ImageBrush ImageSource="Images/System-settings-icon.png"/>
+                    </Border.Background>
+                </Border>
+                <Border x:Name="ButtonContent" Margin="0,0,0,0">
+                    <Label x:Name="ContentPresenterLabel" Foreground="White" Opacity="1" Width="Auto" HorizontalAlignment="Center" FontWeight="ExtraLight">
+                        <ContentPresenter Height="Auto" Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" FlowDirection="LeftToRight" OverridesDefaultStyle="True"></ContentPresenter>
+                    </Label>
+                </Border>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.Setters>
+                        <Setter Property="Opacity" TargetName="ButtonBorderFill" Value="1"></Setter>
+                        <Setter Property="Button.BitmapEffect" TargetName="ButtonBorder">
+                            <Setter.Value>
+                                <OuterGlowBitmapEffect GlowColor="Gray" GlowSize="2" Opacity="0.75"></OuterGlowBitmapEffect>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger.Setters>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter TargetName="ButtonBorderFill" Property="RenderTransform" >
+                        <Setter.Value>
+                            <TranslateTransform Y="1" />
+                        </Setter.Value>
+                    </Setter>
+                    <Setter TargetName="ButtonBorderFill" Property="Background" Value="#FF1100FF" />
+                </Trigger>
+                <!--<Setter Property="Foreground" TargetName="ContentPresenterLabel" Value="Black"/>-->
+                <!--<EventTrigger RoutedEvent="Grid.MouseEnter" SourceName="StealthButtonOuterGrid1">
+                    <BeginStoryboard Storyboard="{StaticResource MouseOverButtonEffect}"/>
+                </EventTrigger>-->
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
+        <ControlTemplate x:Key="MinimizeButton" TargetType="{x:Type Button}">
+            <ControlTemplate.Resources>
+                <Storyboard x:Key="MouseOverButtonEffect">
+                    <ThicknessAnimation Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="(Control.Margin)"
+                     Duration="0:0:0.05" FillBehavior="Stop" From="0,0,0,0" To="4,4,4,4" AutoReverse="True" />
+                </Storyboard>
+                <Storyboard x:Key="RotateImage">
+                    <DoubleAnimationUsingKeyFrames Storyboard.TargetName="rotButton" Storyboard.TargetProperty="(RotateTransform.Angle)">
+                        <SplineDoubleKeyFrame KeyTime="0:0:00.0" Value="0" />
+                        <SplineDoubleKeyFrame KeyTime="0:0:00.80" Value="180" />
+                    </DoubleAnimationUsingKeyFrames>
+                </Storyboard>
+
+            </ControlTemplate.Resources>
+            <Grid x:Name="StealthButtonOuterGrid1">
+                <Border x:Name="ButtonBorder" CornerRadius="0,0,0,0" Margin="0,0,0,0" Background="Transparent" Opacity=".01" BorderThickness="1" BorderBrush="Black">
+                </Border>
+                <Border x:Name="ButtonBorderFill" CornerRadius="0,0,0,0" Margin="0,0,0,0" Opacity=".01" BorderThickness="1">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint=".1,.0" StartPoint=".1,3">
+                            <GradientStop Color="#FF333333" Offset="0"/>
+                            <GradientStop Color="#FF333333" Offset="0.5"/>
+                            <GradientStop Color="#FF333333" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                </Border>
+                
+                        <Image x:Name="ClickImage" Source="Images/Arrow.png">
+                            <Image.RenderTransform>
+                                <TransformGroup>
+                                    <RotateTransform x:Name="rotButton" Angle="0" CenterX="12.5" CenterY="12.5" />
+                                    <ScaleTransform x:Name="scaButton" ScaleX="1" ScaleY="1" CenterX="50" CenterY="25" />
+                                </TransformGroup>
+                            </Image.RenderTransform>
+                        </Image>
+                                 
+
+                <Border x:Name="ButtonContent" Margin="0,0,0,0">
+                    <Label x:Name="ContentPresenterLabel" Foreground="White" Opacity="1" Width="Auto" HorizontalAlignment="Center" FontWeight="ExtraLight">
+                        <ContentPresenter Height="Auto" Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" FlowDirection="LeftToRight" OverridesDefaultStyle="True"></ContentPresenter>
+                    </Label>
+                </Border>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.Setters>
+                        <Setter Property="Opacity" TargetName="ButtonBorderFill" Value="1"></Setter>
+                        <Setter Property="Button.BitmapEffect" TargetName="ButtonBorder">
+                            <Setter.Value>
+                                <OuterGlowBitmapEffect GlowColor="Gray" GlowSize="2" Opacity="0.75"></OuterGlowBitmapEffect>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger.Setters>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter TargetName="ButtonBorderFill" Property="RenderTransform" >
+                        <Setter.Value>
+                            <TranslateTransform Y="1" />
+                        </Setter.Value>
+                    </Setter>
+                    <Setter TargetName="ButtonBorderFill" Property="Background" Value="#FF1100FF" />
+                </Trigger>
+                <!--<EventTrigger RoutedEvent="Grid.MouseLeftButtonDown" SourceName="StealthButtonOuterGrid1">
+                    <BeginStoryboard Storyboard="{StaticResource RotateImage}"/>
+                </EventTrigger>-->
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <Style x:Key="mnuButton" TargetType="{x:Type Button}">
+            <Setter Property="Template" Value="{StaticResource MinimizeButton}"/>
+        </Style>
+
+        <Style x:Key="mnusetting" TargetType="{x:Type Button}">
+            <Setter Property="Template" Value="{StaticResource MenuSetting}"/>
+        </Style>
+        <ControlTemplate x:Key="Menu" TargetType="{x:Type ContextMenu}">
+            <Border Background="?#?CD222120?" CornerRadius="7, 7, 8, 8" BorderBrush="DarkGray" BorderThickness="2" Opacity="0.96">
+                <StackPanel ClipToBounds="True" Orientation="Vertical" IsItemsHost="True" Margin="5,4,5,4"/>
+            </Border>
+        </ControlTemplate>
+
+        <Style x:Key="ContextMnu" TargetType="{x:Type ContextMenu}">
+            <Setter Property="Template" Value="{StaticResource Menu}"/>
+        </Style>
+
+
+    </Window.Resources>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard Storyboard="{StaticResource flyinStoryboard}" />
+            <BeginStoryboard Storyboard="{StaticResource fadeInfadeOutStoryboard}" />
+        </EventTrigger>
+    </Window.Triggers>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="35"/>
+        </Grid.RowDefinitions>
+        <Grid  Grid.Row="1" x:Name="Bd" Height="256" Opacity="0" Style="{StaticResource OPGrid}">
+            <Grid.Triggers>
+                <EventTrigger RoutedEvent="Grid.MouseEnter">
+                    <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                </EventTrigger>
+                <EventTrigger RoutedEvent="Grid.MouseLeave">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                    </EventTrigger.Actions>
+                </EventTrigger>
+            </Grid.Triggers>
+        </Grid>
+        <Grid Grid.Row="1" Height="256" x:Name="GridWeek">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="70" />
+                <RowDefinition Height="20" />
+                <RowDefinition Height="5" />
+                <RowDefinition Height="150" />
+                <RowDefinition Height="5*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="32" />
+                <ColumnDefinition Width="32" />
+                <ColumnDefinition Width="32"/>
+                <ColumnDefinition Width="32" />
+                <ColumnDefinition Width="32" />
+                <ColumnDefinition Width="32" />
+                <ColumnDefinition Width="32" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Row="0" Grid.ColumnSpan="9">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="7*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="21" />
+                    <ColumnDefinition Width="21" />
+                    <ColumnDefinition Width="21" />
+                    <ColumnDefinition Width="4" />
+                    <ColumnDefinition Width="21" />
+                    <ColumnDefinition Width="21" />
+                    <ColumnDefinition Width="21" />
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="5*" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="5*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button  Height ="20" Width="20" Style="{StaticResource MoveBackWard}" Name="btnDoubleBackWard">
+                        7
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                                <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                                <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button Grid.Column="1" Height ="20" Width="20" Style="{StaticResource MoveBackWard}" Name="btnBackWard">
+                        3
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                                <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                                <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                            </EventTrigger>
+                        </Button.Triggers>
+
+                    </Button>
+                </Grid>
+                <Grid Grid.Column="9">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="5*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Height ="20" Width="20" Style="{StaticResource MoveBackWard}" Name="BtnForward">
+                        4
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                                <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                                <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button Grid.Column="1" Height ="20" Width="20" Style="{StaticResource MoveBackWard}" Name="BtnDoubleForward">
+                        8
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                                <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                                <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                            </EventTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </Grid>
+                <Grid Grid.Column="1" Grid.ColumnSpan="9">
+                    <Grid.RowDefinitions >
+                        <RowDefinition Height="6*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="3.5*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4.8*"/>
+                        <ColumnDefinition Width="4.8*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label x:Name="NDate" Content="bnod" Grid.ColumnSpan="2" Grid.RowSpan="2" Foreground="White" Opacity=".8" FontWeight="ExtraLight" VerticalContentAlignment="Bottom" VerticalAlignment="Bottom" HorizontalAlignment="Center" HorizontalContentAlignment="Right">
+                        <Label.Triggers>
+                            <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                                <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                                <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                            </EventTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Label Grid.Column="1"  Grid.Row="0" Grid.RowSpan="2"  x:Name="DateContentYear" Foreground="White" Opacity=".8" HorizontalAlignment="Left" FontWeight="ExtraLight" HorizontalContentAlignment="Left" VerticalContentAlignment="Bottom" VerticalAlignment="Bottom" Visibility="Hidden">
+                        <Label.Triggers>
+                            <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                                <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                                <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                            </EventTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Label x:Name="DateContent" Visibility="Hidden" Grid.RowSpan="2" Foreground="White" Opacity=".8" FontWeight="ExtraLight" VerticalContentAlignment="Bottom" Width="62" VerticalAlignment="Bottom" HorizontalAlignment="Right" HorizontalContentAlignment="Right">
+                        <Label.Triggers>
+                            <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                                <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                                <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                            </EventTrigger>
+                        </Label.Triggers>
+                    </Label>
+                    <Label Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="1" Grid.RowSpan="2" x:Name="EngDateContent" Foreground="White" Opacity=".8" HorizontalAlignment="Center" FontStyle="Normal" FontWeight="Bold" VerticalContentAlignment="Top" VerticalAlignment="Top" >2071
+                        <Label.Triggers>
+                            <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                                <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                                <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                            </EventTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </Grid>
+
+
+            </Grid>
+            <Grid Grid.Row="3" Grid.ColumnSpan="9" x:Name="ButtonGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="30" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="15" />
+                    <ColumnDefinition Width="17"/>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="32" />
+                    <ColumnDefinition Width="32" />
+                    <ColumnDefinition Width="32" />
+                    <ColumnDefinition Width="22" />
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="17" />
+                    <ColumnDefinition Width="15"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="1" x:Name="btn1"  Grid.Row="0" Style="{DynamicResource StealthButton1}" Grid.ColumnSpan="2">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="2"  x:Name="Ebtn1" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="0,15,0,0" Width="15">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="3" x:Name="btn2" Grid.Row="0" Style="{DynamicResource StealthButton1}">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="3" Width="15" x:Name="Ebtn2" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="15,15,0,0">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="4" x:Name="btn3" Grid.Row="0" Style="{DynamicResource StealthButton1}">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="4" Width="15" x:Name="Ebtn3" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="15,15,0,0">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="5" x:Name="btn4" Grid.Row="0" Style="{DynamicResource StealthButton1}">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="5" Width="15" x:Name="Ebtn4" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="15,15,0,0">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="6" x:Name="btn5" Grid.Row="0" Style="{DynamicResource StealthButton1}">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="6" Width="15" x:Name="Ebtn5" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="15,15,0,0">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="7" x:Name="btn6" Grid.Row="0" Style="{DynamicResource StealthButton1}" Grid.ColumnSpan="2">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="7" Width="15"  x:Name="Ebtn6" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="15,15,0,0" Grid.ColumnSpan="2">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="9" x:Name="btn7" Grid.Row="0" Style="{DynamicResource ButtonSaturday}" Grid.ColumnSpan="2">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="9" Width="15" x:Name="Ebtn7" Style="{DynamicResource EHoliday}" HorizontalAlignment="Left" Margin="15,15,0,0" Grid.ColumnSpan="2">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="1" x:Name="btn8" Grid.Row="1" Style="{DynamicResource StealthButton1}" Grid.ColumnSpan="2">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="2" Grid.Row="1" x:Name="Ebtn8" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="0,15,0,0" Width="15">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="3" x:Name="btn9" Grid.Row="1" Style="{DynamicResource StealthButton1}">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="3" Width="15" Grid.Row="1" x:Name="Ebtn9" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="15,15,0,0">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="4" x:Name="btn10" Grid.Row="1" Style="{DynamicResource StealthButton1}">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="4" Width="15" Grid.Row="1" x:Name="Ebtn10" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="15,15,0,0">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="5" x:Name="btn11" Grid.Row="1" Style="{DynamicResource StealthButton1}">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="5" Width="15" Grid.Row="1" x:Name="Ebtn11" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="15,15,0,0">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="6" x:Name="btn12" Grid.Row="1" Style="{DynamicResource StealthButton1}">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="6" Width="15" Grid.Row="1" x:Name="Ebtn12" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="15,15,0,0">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="7" x:Name="btn13" Grid.Row="1" Style="{DynamicResource StealthButton1}" Grid.ColumnSpan="2">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="7"  Width="15" Grid.Row="1" x:Name="Ebtn13" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="15,15,0,0" Grid.ColumnSpan="2">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="9" x:Name="btn14" Grid.Row="1" Style="{DynamicResource ButtonSaturday}" Grid.ColumnSpan="2">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="9" Width="15" Grid.Row="1" x:Name="Ebtn14" Style="{DynamicResource EHoliday}" HorizontalAlignment="Left" Margin="15,15,0,0" Grid.ColumnSpan="2">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="1" x:Name="btn15" Grid.Row="2" Style="{DynamicResource StealthButton1}" Grid.ColumnSpan="2">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="2" Width="15" Grid.Row="2" x:Name="Ebtn15" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="0,15,0,0">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="3" Grid.Row="2" Style="{DynamicResource StealthButton1}" Name="btn16">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="3" Width="15" Grid.Row="2" x:Name="Ebtn16" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="15,15,0,0">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="4" x:Name="btn17" Grid.Row="2" Style="{DynamicResource StealthButton1}">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="4" Width="15"  Grid.Row="2" x:Name="Ebtn17" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="15,15,0,0">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="5" x:Name="btn18" Grid.Row="2" Style="{DynamicResource StealthButton1}">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="5" Width="15" Grid.Row="2" x:Name="Ebtn18" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="15,15,0,0">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="6" x:Name="btn19" Grid.Row="2" Style="{DynamicResource StealthButton1}">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="6" Grid.Row="2" x:Name="Ebtn19" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="15,15,0,0" Width="15">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="7" x:Name="btn20" Grid.Row="2" Style="{DynamicResource StealthButton1}" Grid.ColumnSpan="2">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="7" Width="15" Grid.Row="2"  x:Name="Ebtn20" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="15,15,0,0" Grid.ColumnSpan="2" >
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="9" x:Name="btn21" Grid.Row="2" Style="{DynamicResource ButtonSaturday}" Grid.ColumnSpan="2">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="9" Width="15" Grid.Row="2" x:Name="Ebtn21" Style="{DynamicResource EHoliday}" HorizontalAlignment="Left" Margin="15,15,0,0" Grid.ColumnSpan="2">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="1" x:Name="btn22" Grid.Row="3" Style="{DynamicResource StealthButton1}" Grid.ColumnSpan="2">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="2" Width="15" Grid.Row="3" x:Name="Ebtn22" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="0,15,0,0">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="3" x:Name="btn23" Grid.Row="3" Style="{DynamicResource StealthButton1}">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="3" Width="15" Grid.Row="3" x:Name="Ebtn23" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="15,15,0,0" Height="15" VerticalAlignment="Top">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="4" x:Name="btn24" Grid.Row="3" Style="{DynamicResource StealthButton1}">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="4" Width="15" Grid.Row="3" x:Name="Ebtn24" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="15,15,0,0">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="5" x:Name="btn25" Grid.Row="3" Style="{DynamicResource StealthButton1}">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="5" Width="15" Grid.Row="3" x:Name="Ebtn25" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="15,15,0,0">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="6" x:Name="btn26" Grid.Row="3" Style="{DynamicResource StealthButton1}">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="6" Grid.Row="3" x:Name="Ebtn26" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="15,15,0,0" Width="15" >
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="7" x:Name="btn27" Grid.Row="3" Style="{DynamicResource StealthButton1}" Grid.ColumnSpan="2">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="7" Width="15" Grid.Row="3" x:Name="Ebtn27" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="15,15,0,0" Grid.ColumnSpan="2">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="9" Grid.Row="3" x:Name="btn28" Style="{DynamicResource ButtonSaturday}" Height="30" VerticalAlignment="Top" Grid.ColumnSpan="2">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="9" Width="15" Grid.Row="3" x:Name="Ebtn28" Style="{DynamicResource EHoliday}" HorizontalAlignment="Left" Margin="15,15,0,0" Grid.ColumnSpan="2">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="1" x:Name="btn29" Grid.Row="4" Style="{DynamicResource StealthButton1}" Grid.ColumnSpan="2">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="2" Width="15" Grid.Row="4" x:Name="Ebtn29" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="0,15,0,0">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="3" x:Name="btn30" Grid.Row="4" Style="{DynamicResource StealthButton1}">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="3" Width="15" Grid.Row="4" x:Name="Ebtn30" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="15,15,0,0">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="4" x:Name="btn31" Grid.Row="4" Style="{DynamicResource StealthButton1}">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="4" Width="15" Grid.Row="4" x:Name="Ebtn31" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="15,15,0,0">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="5" x:Name="btn32" Grid.Row="4" Style="{DynamicResource StealthButton1}">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="5" Width="15" Grid.Row="4" x:Name="Ebtn32" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="15,15,0,0">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="6" x:Name="btn33" Grid.Row="4" Style="{DynamicResource StealthButton1}">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="6" Width="15" Grid.Row="4" x:Name="Ebtn33" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="15,15,0,0">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="7" x:Name="btn34" Grid.Row="4" Style="{DynamicResource StealthButton1}" Grid.ColumnSpan="2">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="7" Width="15" Grid.Row="4" x:Name="Ebtn34" Style="{DynamicResource EngBtn}" HorizontalAlignment="Left" Margin="15,15,0,0" Grid.ColumnSpan="2">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="9" x:Name="btn35" Grid.Row="4" Style="{DynamicResource ButtonSaturday}" Grid.ColumnSpan="2">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+                <Button Grid.Column="9" Width="15" Grid.Row="4" x:Name="Ebtn35" Style="{DynamicResource EHoliday}" HorizontalAlignment="Left" Margin="15,15,0,0" Grid.ColumnSpan="2">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                            <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+            </Grid>
+            <Button Name="btnSunday"  Grid.Column="1" Grid.Row="1" Style="{StaticResource ButtonWeak}">
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                        <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                        <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                    </EventTrigger>
+                </Button.Triggers>
+            </Button>
+            <Button x:Name="btnMonday" Grid.Column="2" Grid.Row="1" Style="{StaticResource ButtonWeak}">
+
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                        <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                        <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                    </EventTrigger>
+                </Button.Triggers>
+            </Button>
+            <Button x:Name="btnTue" Grid.Column="3" Grid.Row="1" Style="{StaticResource ButtonWeak}">
+
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                        <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                        <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                    </EventTrigger>
+                </Button.Triggers>
+            </Button>
+            <Button x:Name="btnWed" Grid.Column="4" Grid.Row="1" Style="{StaticResource ButtonWeak}">
+
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                        <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                        <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                    </EventTrigger>
+                </Button.Triggers>
+            </Button>
+            <Button x:Name="btnThus" Grid.Column="5" Grid.Row="1" Style="{StaticResource ButtonWeak}">
+
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                        <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                        <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                    </EventTrigger>
+                </Button.Triggers>
+            </Button>
+            <Button Grid.Column="6" x:Name="btnFri"  Grid.Row="1" Style="{StaticResource ButtonWeak}">
+
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                        <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                        <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                    </EventTrigger>
+                </Button.Triggers>
+            </Button>
+            <Button x:Name="btnSaturday" Grid.Column="7" Grid.Row="1" Style="{StaticResource ButtonSatWeek}">
+
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                        <BeginStoryboard Storyboard="{StaticResource MouseHoverStoryBoard}" />
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                        <BeginStoryboard Storyboard="{StaticResource MouseLeaveStoryBoard}" />
+                    </EventTrigger>
+                </Button.Triggers>
+            </Button>
+        </Grid>
+        <Grid Grid.Row="2" x:Name="GridToday" Height="35">
+            <Label x:Name="DateofToday"
+               Foreground="White" Opacity=".8" 
+               VerticalAlignment="Stretch"
+               VerticalContentAlignment="Center"
+               HorizontalContentAlignment="Center"
+               HorizontalAlignment="Center"
+               FontWeight="ExtraLight" 
+               MouseDoubleClick="Show_CurDate">
+                <!--<Label.Triggers>
+                <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                    <BeginStoryboard Storyboard="{DynamicResource TextZoomIn}" />
+                </EventTrigger>
+                <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                    <BeginStoryboard Storyboard="{DynamicResource TextZoomOut}" />
+                </EventTrigger>
+            </Label.Triggers>-->
+            </Label>
+        </Grid>
+        <Grid Grid.Row="0" HorizontalAlignment="Right" Width="290" x:Name="GridFocus">
+            <Grid>
+                <Grid.ColumnDefinitions >
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="5"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions >
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Border Grid.ColumnSpan="6" Grid.RowSpan="3" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,.3" MouseDown="Border_MouseDown">
+                    <Border.Background >
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Offset="0" Color="#00000003"/>
+                            <GradientStop Offset="1" Color="#EF000011"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                </Border>
+                <Label x:Name="lblMenu"  Grid.Column="2" Content="Binod" Background="Transparent" Foreground="AntiqueWhite" Grid.Row="1" VerticalAlignment="Center" Height="0" HorizontalAlignment="Center"/>
+                <Button Grid.Column="1" Height="25" Grid.Row="1" Click="PopUp" x:Name="menuButton" MouseEnter="menuButton_Show" MouseLeave="menuButton_Hide" Style="{StaticResource mnusetting}" Margin="0,2,0,3" Grid.RowSpan="2" >
+                    <Button.Background>
+                        <ImageBrush ImageSource="Images/System-settings-icon.png"/>
+                    </Button.Background>
+                    <Button.ContextMenu>
+                        <ContextMenu x:Name="myContextMenu">
+                            <ContextMenu.Template >
+                                <ControlTemplate>
+                                    <Border Background="#DD222120" CornerRadius="0,0,0,0" BorderBrush="Black" BorderThickness="1" Opacity="0.96">
+                                        <StackPanel ClipToBounds="True" Orientation="Vertical" IsItemsHost="True" Margin="5,4,5,4"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </ContextMenu.Template>
+                            <MenuItem x:Name="FontEnable"  Header="Enable Nepali Font" Click="Font_Enable"  Foreground="AntiqueWhite"  />
+                            <MenuItem x:Name="GOTO" Header="Go To" Foreground="AntiqueWhite" Click="Go_To"/>
+                            <MenuItem x:Name="Nepali" Header="B.S. Calendar" Foreground="AntiqueWhite"/>
+                            <MenuItem x:Name="English" Header="A.D. Calendar" Foreground="AntiqueWhite"/>
+                            <MenuItem Header="Date Convert" Foreground="AntiqueWhite" Click="ShowDateCov"/>
+                            <MenuItem Header="About" x:Name="About" Foreground="AntiqueWhite" />
+                            <MenuItem Header="Exit" x:Name="Exit" Foreground="AntiqueWhite"  Click="CloseButton_Click"/>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+                <Button Grid.Column="3" Grid.Row="1"  x:Name="MinButton" Style="{DynamicResource mnuButton}" MouseEnter="minButton_Show" MouseLeave="lblMenu_LostFocus" Click="Hide_Detail">
+                </Button>
+                <Label x:Name="lM"  Grid.Column="2" Content="Binod" Background="Transparent" Foreground="AntiqueWhite" Grid.Row="1" VerticalAlignment="Center" Height="0" HorizontalAlignment="Center"/>
+            </Grid>
+        </Grid>
+    </Grid>
+    <Window.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                <GradientStop Offset="0" Color="#DF000003"/>
+                <GradientStop Offset="1" Color="#EF000011"/>
+            </LinearGradientBrush>
+    </Window.Background>
+    <!--<Window.RenderTransform >
+        <TransformGroup>
+            <ScaleTransform CenterX="1" ScaleY="1"/>
+            <SkewTransform AngleX="0" AngleY="0"/>
+            <RotateTransform Angle="0"/>
+            <TranslateTransform X="0" Y="0"/>
+        </TransformGroup>
+    </Window.RenderTransform>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+            <BeginStoryboard Storyboard="{StaticResource StorybardEnterance}"/>
+        </EventTrigger>
+    </Window.Triggers>-->
+</Window>

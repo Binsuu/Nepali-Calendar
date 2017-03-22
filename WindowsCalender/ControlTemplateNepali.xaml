@@ -1,0 +1,594 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ControlTemplate x:Key="BtnWeek"  TargetType="{x:Type Button}">
+        <ControlTemplate.Resources>
+            <Storyboard x:Key="MouseOverButtonEffect">
+                <ThicknessAnimation Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="(Control.Margin)"
+                 Duration="0:0:0.05" FillBehavior="Stop" From="0,0,0,0" To="4,4,4,4" AutoReverse="True" />
+            </Storyboard>
+        </ControlTemplate.Resources>
+        <Grid x:Name="StealthButtonOuterGrid">
+            <Border x:Name="ButtonBorder" CornerRadius="2,2,2,2" Margin="0,0,0,0" Background="Transparent" Opacity=".5" BorderThickness="1" BorderBrush="Black"></Border>
+            <Border x:Name="ButtonBorderFill" CornerRadius="4,4,4,4" Margin="0,0,0,0" Opacity="0.85" BorderThickness="1">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Offset="0" Color="#00aa00"/>
+                        <GradientStop Offset="1" Color="#111111"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+            <Border x:Name="ButtonFill" CornerRadius="4,4,4,4" Margin="0,0,0,0" Opacity="0.01" BorderThickness="1">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Offset="0" Color="#005500"/>
+                        <GradientStop Offset="1" Color="#000000"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+            <Border x:Name="ButtonContent" Margin="-4,-4,-4,-4">
+                <Label x:Name="ContentPresenterLabel"  Width="Auto" HorizontalAlignment="Center"  Foreground="White" Opacity=".8" >
+                    <ContentPresenter Height="Auto" Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" FlowDirection="LeftToRight" OverridesDefaultStyle="True"></ContentPresenter>
+                </Label>
+            </Border>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.Setters>
+                    <Setter Property="Foreground" TargetName="ContentPresenterLabel" Value="White"></Setter>
+                    <Setter Property="FontWeight" TargetName="ContentPresenterLabel" Value="Normal"></Setter>
+                    <Setter Property="Opacity" TargetName="ContentPresenterLabel" Value="1"></Setter>
+                    <Setter Property="Opacity" TargetName="ButtonFill" Value="1"></Setter>
+                    <Setter Property="Button.BitmapEffect" TargetName="ButtonBorder">
+                        <Setter.Value>
+                            <OuterGlowBitmapEffect GlowColor="Gray" GlowSize="2" Opacity="0.75"></OuterGlowBitmapEffect>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger.Setters>
+            </Trigger>
+            <EventTrigger RoutedEvent="Grid.MouseEnter" SourceName="StealthButtonOuterGrid">
+                <BeginStoryboard Storyboard="{StaticResource MouseOverButtonEffect}"/>
+            </EventTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="MoveBack"  TargetType="{x:Type Button}">
+        <ControlTemplate.Resources>
+            <Storyboard x:Key="MouseOverButtonEffect">
+                <ThicknessAnimation Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="(Control.Margin)"
+                 Duration="0:0:0.05" FillBehavior="Stop" From="0,0,0,0" To="10,10,10,10" AutoReverse="True" />
+            </Storyboard>
+        </ControlTemplate.Resources>
+        <Grid x:Name="StealthButtonOuterGrid">
+            <Border x:Name="ButtonBorder" CornerRadius="8,8,8,8" Margin="0,0,0,0" Background="Transparent" Opacity=".5" BorderThickness="1" BorderBrush="Black"></Border>
+            <Border x:Name="ButtonBorderFill" CornerRadius="8,8,8,8" Margin="0,0,0,0" Opacity="0.05" BorderThickness="1">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Offset="0" Color="#00aa00"/>
+                        <GradientStop Offset="1" Color="#111111"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+            <Border x:Name="ButtonFill" CornerRadius="10,10,10,10" Margin="0,0,0,0" Opacity="0.01" BorderThickness="1">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Offset="0" Color="#FF5500"/>
+                        <GradientStop Offset="1" Color="#222222"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+            <Border x:Name="ButtonGlow" CornerRadius="10,10,10,10" Margin="0,0,0,0" Opacity="0.01" BorderThickness="1">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Offset="0" Color="#FF0000"/>
+                        <GradientStop Offset="1" Color="#000000"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+            <Border x:Name="ButtonContent" Margin="-3,-3,-3,-3">
+                <Label x:Name="ContentPresenterLabel" Foreground="White" Opacity=".8" Width="Auto" HorizontalAlignment="Center" FontFamily="Webdings"  FontSize="15">
+                    <ContentPresenter Height="Auto" Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" FlowDirection="LeftToRight" OverridesDefaultStyle="True"></ContentPresenter>
+                </Label>
+            </Border>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Opacity" TargetName="ButtonGlow" Value="1"></Setter>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.Setters>
+                    <Setter Property="Foreground" TargetName="ContentPresenterLabel" Value="White"></Setter>
+                    <Setter Property="FontWeight" TargetName="ContentPresenterLabel" Value="Normal"></Setter>
+                    <Setter Property="Opacity" TargetName="ContentPresenterLabel" Value="1"></Setter>
+                    <Setter Property="Opacity" TargetName="ButtonFill" Value="1"></Setter>
+                    <Setter Property="Button.BitmapEffect" TargetName="ButtonBorder">
+                        <Setter.Value>
+                            <OuterGlowBitmapEffect GlowColor="Gray" GlowSize="2" Opacity="0.75"></OuterGlowBitmapEffect>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger.Setters>
+            </Trigger>
+            <EventTrigger RoutedEvent="Grid.MouseEnter" SourceName="StealthButtonOuterGrid">
+                <BeginStoryboard Storyboard="{StaticResource MouseOverButtonEffect}"/>
+            </EventTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <ControlTemplate x:Key="BtnDays"  TargetType="{x:Type Button}">
+        <ControlTemplate.Resources>
+            <Storyboard x:Key="MouseOverButtonEffect">
+                <ThicknessAnimation Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="(Control.Margin)"
+                 Duration="0:0:0.05" FillBehavior="Stop" From="0,0,0,0" To="4,4,4,4" AutoReverse="True" />
+            </Storyboard>
+        </ControlTemplate.Resources>
+        <Grid x:Name="StealthButtonOuterGrid1">
+            <Border x:Name="ButtonBorder" CornerRadius="2,8,2,8" Margin="0,0,0,0" Background="Transparent" Opacity=".5" BorderThickness="1" BorderBrush="Black">
+            </Border>
+            <Border x:Name="ButtonBorderFill" CornerRadius="2,8,2,8" Margin="0,0,0,0" Opacity="0.01" BorderThickness="1">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Offset="0" Color="#ef5d2D"/>
+                        <GradientStop Offset="1" Color="#222222"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+            <Border x:Name="ButtonContent" Margin="-5,-1,1,1">
+                <Label x:Name="ContentPresenterLabel" Foreground="White" Opacity=".8" Width="Auto" HorizontalAlignment="Center"  FontWeight="ExtraLight" >
+                    <ContentPresenter Height="Auto" Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" FlowDirection="LeftToRight" OverridesDefaultStyle="True"></ContentPresenter>
+                </Label>
+            </Border>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.Setters>
+                    <Setter Property="Opacity" TargetName="ButtonBorderFill" Value="1"></Setter>
+                    <Setter Property="Button.BitmapEffect" TargetName="ButtonBorder">
+                        <Setter.Value>
+                            <OuterGlowBitmapEffect GlowColor="Gray" GlowSize="2" Opacity="0.75"></OuterGlowBitmapEffect>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger.Setters>
+            </Trigger>
+            <EventTrigger RoutedEvent="Grid.MouseEnter" SourceName="StealthButtonOuterGrid1">
+                <BeginStoryboard Storyboard="{StaticResource MouseOverButtonEffect}"/>
+            </EventTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <ControlTemplate x:Key="BtnCurrentDays"  TargetType="{x:Type Button}">
+        <ControlTemplate.Resources>
+            <Storyboard x:Key="MouseOverButtonEffect">
+                <ThicknessAnimation Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="(Control.Margin)"
+                 Duration="0:0:0.05" FillBehavior="Stop" From="0,0,0,0" To="4,4,4,4" AutoReverse="True" />
+            </Storyboard>
+        </ControlTemplate.Resources>
+        <Grid x:Name="StealthButtonOuterGrid1">
+            <Border x:Name="ButtonBorder" CornerRadius="2,8,2,8" Margin="0,0,0,0" Background="Transparent" Opacity=".5" BorderThickness="1" BorderBrush="Black">
+            </Border>
+            <Border x:Name="ButtonBorderFill" CornerRadius="4,4,4,4" Margin="0,0,0,0" Opacity=".8" BorderThickness="1">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Offset="0" Color="#FAF02A"/>
+                        <GradientStop Offset="1" Color="#222222"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+            <Border x:Name="ButtonContent" Margin="-5,-1,1,1">
+                <Label x:Name="ContentPresenterLabel" Foreground="White" Opacity="1" Width="Auto" HorizontalAlignment="Center" FontWeight="ExtraLight">
+                    <ContentPresenter Height="Auto" Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" FlowDirection="LeftToRight" OverridesDefaultStyle="True"></ContentPresenter>
+                </Label>
+            </Border>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.Setters>
+                    <Setter Property="Opacity" TargetName="ButtonBorderFill" Value="1"></Setter>
+                    <Setter Property="Button.BitmapEffect" TargetName="ButtonBorder">
+                        <Setter.Value>
+                            <OuterGlowBitmapEffect GlowColor="Gray" GlowSize="2" Opacity="0.75"></OuterGlowBitmapEffect>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Foreground" TargetName="ContentPresenterLabel" Value="Black"/>
+                </Trigger.Setters>
+            </Trigger>
+            <EventTrigger RoutedEvent="Grid.MouseEnter" SourceName="StealthButtonOuterGrid1">
+                <BeginStoryboard Storyboard="{StaticResource MouseOverButtonEffect}"/>
+            </EventTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <ControlTemplate x:Key="BtnEDays"  TargetType="{x:Type Button}">
+        <ControlTemplate.Resources>
+            <Storyboard x:Key="MouseOverButtonEffect">
+                <ThicknessAnimation Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="(Control.Margin)"
+                 Duration="0:0:0.05" FillBehavior="Stop" From="0,0,0,0" To="4,4,4,4" AutoReverse="True" />
+                <!--<DoubleAnimation Storyboard.TargetName="ButtonBorderFill"
+                                     Storyboard.TargetProperty="Width"
+                                     Duration="0:0:0.05" From ="0" To="50" />-->
+            </Storyboard>
+        </ControlTemplate.Resources>
+        <Grid x:Name="StealthButtonOuterGrid1">
+            <Border x:Name="ButtonBorder" CornerRadius="4,4,4,4" Margin="0,0,0,0" Background="Transparent" Opacity="0.01" BorderThickness="1" BorderBrush="Black">
+            </Border>
+            <Border x:Name="ButtonBorderFill"  CornerRadius="4,4,4,4"  Margin="0,0,0,0" Opacity="0.01" BorderThickness="1">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Offset="0" Color="#ef5d2D"/>
+                        <GradientStop Offset="1" Color="#222222"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+            <Border x:Name="ButtonContent" Margin="-2,-2,-2,-2">
+                <Label x:Name="ContentPresenterLabel" Foreground="White" Opacity=".8" Width="Auto" HorizontalAlignment="Center" FontWeight="ExtraLight">
+                    <ContentPresenter Height="Auto" Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" FlowDirection="LeftToRight" OverridesDefaultStyle="True"></ContentPresenter>
+                </Label>
+            </Border>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.Setters>
+                    <Setter Property="Opacity" TargetName="ButtonBorderFill" Value="1"></Setter>
+                    <Setter Property="Button.BitmapEffect" TargetName="ButtonBorder">
+                        <Setter.Value>
+                            <OuterGlowBitmapEffect GlowColor="Gray" GlowSize="2" Opacity="0.75"></OuterGlowBitmapEffect>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger.Setters>
+            </Trigger>
+            <EventTrigger RoutedEvent="Grid.MouseEnter" SourceName="StealthButtonOuterGrid1">
+                <BeginStoryboard Storyboard="{StaticResource MouseOverButtonEffect}"/>
+            </EventTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    
+    <ControlTemplate x:Key="BtnCurrentEDays"  TargetType="{x:Type Button}">
+        <ControlTemplate.Resources>
+            <Storyboard x:Key="MouseOverButtonEffect">
+                <ThicknessAnimation Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="(Control.Margin)"
+                 Duration="0:0:0.05" FillBehavior="Stop" From="0,0,0,0" To="4,4,4,4" AutoReverse="True" />
+            </Storyboard>
+        </ControlTemplate.Resources>
+        <Grid x:Name="StealthButtonOuterGrid1">
+            <Border x:Name="ButtonBorder" CornerRadius="4,4,4,4" Margin="0,0,0,0" Background="Transparent" Opacity=".2" BorderThickness="1" BorderBrush="Black">
+            </Border>
+            <Border x:Name="ButtonBorderFill" CornerRadius="4,4,4,4" Margin="0,0,0,0" Opacity="0.01" BorderThickness="1">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Offset="0" Color="#FAF02A"/>
+                        <GradientStop Offset="1" Color="#222222"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+            <Border x:Name="ButtonContent" Margin="-2,-2,-2,-2">
+                <Label x:Name="ContentPresenterLabel" Foreground="White" Opacity=".8" Width="Auto" HorizontalAlignment="Center" FontWeight="ExtraLight">
+                    <ContentPresenter Height="Auto" Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" FlowDirection="LeftToRight" OverridesDefaultStyle="True"></ContentPresenter>
+                </Label>
+            </Border>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.Setters>
+                    <Setter Property="Opacity" TargetName="ButtonBorderFill" Value="1"></Setter>
+                    <Setter Property="Button.BitmapEffect" TargetName="ButtonBorder">
+                        <Setter.Value>
+                            <OuterGlowBitmapEffect GlowColor="Gray" GlowSize="2" Opacity="0.75"></OuterGlowBitmapEffect>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Foreground" TargetName="ContentPresenterLabel" Value="Black"/>
+
+                </Trigger.Setters>
+            </Trigger>
+            <EventTrigger RoutedEvent="Grid.MouseEnter" SourceName="StealthButtonOuterGrid1">
+                <BeginStoryboard Storyboard="{StaticResource MouseOverButtonEffect}"/>
+            </EventTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    
+    <ControlTemplate x:Key="BtnHoliday"  TargetType="{x:Type Button}">
+        <ControlTemplate.Resources>
+            <Storyboard x:Key="MouseOverButtonEffect">
+                <ThicknessAnimation Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="(Control.Margin)"
+                 Duration="0:0:0.05" FillBehavior="Stop" From="0,0,0,0" To="4,4,4,4" AutoReverse="True" />
+            </Storyboard>
+        </ControlTemplate.Resources>
+        <Grid x:Name="StealthButtonOuterGrid1">
+            <Border x:Name="ButtonBorder" CornerRadius="2,8,2,8" Margin="0,0,0,0" Background="Transparent" Opacity=".5" BorderThickness="1" BorderBrush="Black">
+            </Border>
+            <Border x:Name="ButtonBorderFill" CornerRadius="4,4,4,4" Margin="0,0,0,0" Opacity="1" BorderThickness="1">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Offset="0" Color="#ef0100"/>
+                        <GradientStop Offset="1" Color="#111111"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+            <Border x:Name="ButtonFill" CornerRadius="4,4,4,4" Margin="0,0,0,0" Opacity=".01" BorderThickness="1">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Offset="0" Color="#ac0100"/>
+                        <GradientStop Offset="1" Color="#000000"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+            <Border x:Name="ButtonContent" Margin="-5,-1,1,1">
+                <Label x:Name="ContentPresenterLabel" Foreground="White" Opacity=".8" Width="Auto" HorizontalAlignment="Center" FontWeight="ExtraLight">
+                    <ContentPresenter Height="Auto" Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" FlowDirection="LeftToRight" OverridesDefaultStyle="True"></ContentPresenter>
+                </Label>
+            </Border>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.Setters>
+                    <Setter Property="Opacity" TargetName="ButtonFill" Value="1"></Setter>
+                    <Setter Property="Button.BitmapEffect" TargetName="ButtonBorder">
+                        <Setter.Value>
+                            <OuterGlowBitmapEffect GlowColor="Gray" GlowSize="2" Opacity="0.75"></OuterGlowBitmapEffect>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger.Setters>
+            </Trigger>
+            <EventTrigger RoutedEvent="Grid.MouseEnter" SourceName="StealthButtonOuterGrid1">
+                <BeginStoryboard Storyboard="{StaticResource MouseOverButtonEffect}"/>
+            </EventTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <ControlTemplate x:Key="BtnEHoliday"  TargetType="{x:Type Button}">
+        <ControlTemplate.Resources>
+            <Storyboard x:Key="MouseOverButtonEffect">
+                <ThicknessAnimation Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="(Control.Margin)"
+                 Duration="0:0:0.05" FillBehavior="Stop" From="0,0,0,0" To="4,4,4,4" AutoReverse="True" />
+            </Storyboard>
+        </ControlTemplate.Resources>
+        <Grid x:Name="StealthButtonOuterGrid1">
+            <Border x:Name="ButtonBorder" CornerRadius="4,4,4,4" Margin="0,0,0,0" Background="Transparent" Opacity=".5" BorderThickness="0">
+            </Border>
+            <Border x:Name="ButtonBorderFill" CornerRadius="4,4,4,4" Margin="0,0,0,0" Opacity=".2" BorderThickness="1">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Offset="0" Color="#ef0100"/>
+                        <GradientStop Offset="1" Color="#111111"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+            <Border x:Name="ButtonFill" CornerRadius="4,4,4,4" Margin="0,0,0,0" Opacity=".01" BorderThickness="1">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Offset="0" Color="#ac0100"/>
+                        <GradientStop Offset="1" Color="#000000"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+            <Border x:Name="ButtonContent" Margin="-2,-2,-2,-2">
+                <Label x:Name="ContentPresenterLabel" Foreground="White" Opacity=".8" Width="Auto" HorizontalAlignment="Center" FontWeight="ExtraLight">
+                    <ContentPresenter Height="Auto" Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" FlowDirection="LeftToRight" OverridesDefaultStyle="True"></ContentPresenter>
+                </Label>
+            </Border>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.Setters>
+                    <Setter Property="Opacity" TargetName="ButtonBorderFill" Value="1"></Setter>
+                    <Setter Property="Button.BitmapEffect" TargetName="ButtonBorder">
+                        <Setter.Value>
+                            <OuterGlowBitmapEffect GlowColor="Gray" GlowSize="2" Opacity="0.75"></OuterGlowBitmapEffect>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger.Setters>
+            </Trigger>
+            <EventTrigger RoutedEvent="Grid.MouseEnter" SourceName="StealthButtonOuterGrid1">
+                <BeginStoryboard Storyboard="{StaticResource MouseOverButtonEffect}"/>
+            </EventTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <ControlTemplate x:Key="BtnHolidayWeek"  TargetType="{x:Type Button}">
+        <ControlTemplate.Resources>
+            <Storyboard x:Key="MouseOverButtonEffect">
+                <ThicknessAnimation Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="(Control.Margin)"
+                 Duration="0:0:0.05" FillBehavior="Stop" From="0,0,0,0" To="4,4,4,4" AutoReverse="True" />
+            </Storyboard>
+        </ControlTemplate.Resources>
+        <Grid x:Name="StealthButtonOuterGrid1">
+            <Border x:Name="ButtonBorder" CornerRadius="2,8,2,8" Margin="0,0,0,0" Background="Transparent" Opacity=".5" BorderThickness="1" BorderBrush="Black">
+            </Border>
+            <Border x:Name="ButtonBorderFill" CornerRadius="4,4,4,4" Margin="0,0,0,0" Opacity="1" BorderThickness="1">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Offset="0" Color="#ef0100"/>
+                        <GradientStop Offset="1" Color="#111111"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+            <Border x:Name="ButtonFill" CornerRadius="4,4,4,4" Margin="0,0,0,0" Opacity=".01" BorderThickness="1">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Offset="0" Color="#ac0100"/>
+                        <GradientStop Offset="1" Color="#000000"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+            <Border x:Name="ButtonContent" Margin="-4,-4,-4,-4">
+                <Label x:Name="ContentPresenterLabel" Foreground="White" Opacity=".8" Width="Auto" HorizontalAlignment="Center">
+                    <ContentPresenter Height="Auto" Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" FlowDirection="LeftToRight" OverridesDefaultStyle="True"></ContentPresenter>
+                </Label>
+            </Border>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.Setters>
+                    <Setter Property="Opacity" TargetName="ButtonFill" Value="1"></Setter>
+                    <Setter Property="Button.BitmapEffect" TargetName="ButtonBorder">
+                        <Setter.Value>
+                            <OuterGlowBitmapEffect GlowColor="Gray" GlowSize="2" Opacity="0.75"></OuterGlowBitmapEffect>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger.Setters>
+            </Trigger>
+            <EventTrigger RoutedEvent="Grid.MouseEnter" SourceName="StealthButtonOuterGrid1">
+                <BeginStoryboard Storyboard="{StaticResource MouseOverButtonEffect}"/>
+            </EventTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="MenuTemplate" TargetType="{x:Type Button}">
+        <ControlTemplate.Resources>
+            <Storyboard x:Key="MouseOverButtonEffect">
+                <ThicknessAnimation Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="(Control.Margin)"
+                     Duration="0:0:0.05" FillBehavior="Stop" From="0,0,0,0" To="4,4,4,4" AutoReverse="True" />
+            </Storyboard>
+        </ControlTemplate.Resources>
+        <Grid x:Name="StealthButtonOuterGrid1">
+            <Border x:Name="ButtonBorder" CornerRadius="0,0,0,0" Margin="0,0,0,0" Background="Transparent" Opacity=".01" BorderThickness="1" BorderBrush="Black">
+            </Border>
+            <Border x:Name="ButtonBorderFill" CornerRadius="0,0,0,0" Margin="0,0,0,0" Opacity=".01" BorderThickness="1">
+                <Border.Background>
+                    <LinearGradientBrush EndPoint=".1,.0" StartPoint=".1,3">
+                        <GradientStop Color="#FF333333" Offset="0"/>
+                        <GradientStop Color="#FF333333" Offset="0.5"/>
+                        <GradientStop Color="#FF333333" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+            </Border>
+           <Border x:Name="ButtonContent" Margin="0,0,0,0">
+                <Label x:Name="ContentPresenterLabel" Foreground="White" Opacity="1" Width="Auto"  HorizontalAlignment="Center" FontWeight="ExtraLight">
+                    <ContentPresenter Height="Auto" Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" FlowDirection="LeftToRight" OverridesDefaultStyle="True"></ContentPresenter>
+                </Label>
+            </Border>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.Setters>
+                    <Setter Property="Opacity" TargetName="ButtonBorderFill" Value="1"></Setter>
+                    <Setter Property="Button.BitmapEffect" TargetName="ButtonBorder">
+                        <Setter.Value>
+                            <OuterGlowBitmapEffect GlowColor="Gray" GlowSize="2" Opacity="0.75"></OuterGlowBitmapEffect>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger.Setters>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="ButtonBorderFill" Property="RenderTransform" >
+                    <Setter.Value>
+                        <TranslateTransform Y="1" />
+                    </Setter.Value>
+                </Setter>
+                <Setter TargetName="ButtonBorderFill" Property="Background" Value="#FF1100FF" />
+            </Trigger>
+            <!--<Setter Property="Foreground" TargetName="ContentPresenterLabel" Value="Black"/>-->
+            <!--<EventTrigger RoutedEvent="Grid.MouseEnter" SourceName="StealthButtonOuterGrid1">
+                    <BeginStoryboard Storyboard="{StaticResource MouseOverButtonEffect}"/>
+                </EventTrigger>-->
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+
+    <!-- Flat ComboBox -->
+    <SolidColorBrush x:Key="ComboBoxNormalBorderBrush" Color="#FF111133" />
+    <SolidColorBrush x:Key="ComboBoxNormalBackgroundBrush" Color="#AA111133" />
+    <SolidColorBrush x:Key="ComboBoxDisabledForegroundBrush" Color="#FF111133" />
+    <SolidColorBrush x:Key="ComboBoxDisabledBackgroundBrush" Color="#FF111133" />
+    <SolidColorBrush x:Key="ComboBoxDisabledBorderBrush" Color="#FF111133" />
+    <ControlTemplate TargetType="ToggleButton" x:Key="ComboBoxToggleButtonTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="20" />
+            </Grid.ColumnDefinitions>
+            <Border Grid.ColumnSpan="2" Name="Border"
+BorderBrush="{StaticResource ComboBoxNormalBorderBrush}"
+CornerRadius="0" BorderThickness="1, 1, 1, 1"
+Background="{StaticResource ComboBoxNormalBackgroundBrush}" />
+            <Border Grid.Column="1" Margin="1, 1, 1, 1" BorderBrush="#FF111133" Name="ButtonBorder"
+CornerRadius="0, 0, 0, 0" BorderThickness="0, 0, 0, 0"
+Background="{StaticResource ComboBoxNormalBackgroundBrush}" />
+            <Path Name="Arrow" Grid.Column="1"
+Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 z"
+HorizontalAlignment="Center" Fill="#FF111133"
+VerticalAlignment="Center" />
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="UIElement.IsMouseOver" Value="True">
+                <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="#FF111133"/>
+            </Trigger>
+            <Trigger Property="ToggleButton.IsChecked" Value="True">
+                <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="#FF111133"/>
+                <Setter Property="Shape.Fill" TargetName="Arrow" Value="#FF8D979E"/>
+            </Trigger>
+            <Trigger Property="UIElement.IsEnabled" Value="False">
+                <Setter Property="Panel.Background" TargetName="Border" Value="{StaticResource ComboBoxDisabledBackgroundBrush}"/>
+                <Setter Property="Panel.Background" TargetName="ButtonBorder" Value="{StaticResource ComboBoxDisabledBackgroundBrush}"/>
+                <Setter Property="Border.BorderBrush" TargetName="ButtonBorder" Value="{StaticResource ComboBoxDisabledBorderBrush}"/>
+                <Setter Property="TextElement.Foreground" Value="{StaticResource ComboBoxDisabledForegroundBrush}"/>
+                <Setter Property="Shape.Fill" TargetName="Arrow" Value="#FF111133"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <Style x:Key="ComboBoxFlatStyle" TargetType="{x:Type ComboBox}">
+        <Setter Property="UIElement.SnapsToDevicePixels" Value="True"/>
+        <Setter Property="FrameworkElement.OverridesDefaultStyle" Value="True"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+        <Setter Property="TextElement.Foreground" Value="AntiqueWhite"/>
+        <Setter Property="FrameworkElement.FocusVisualStyle" Value="{x:Null}"/>
+        
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBox">
+                    <Grid>
+                        <ToggleButton Name="ToggleButton" Grid.Column="2"
+ClickMode="Press" Focusable="False"
+IsChecked="{Binding Path=IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+Template="{StaticResource ComboBoxToggleButtonTemplate}"/>
+                        <ContentPresenter Name="ContentSite" Margin="5, 3, 23, 3" IsHitTestVisible="False"
+HorizontalAlignment="Left" VerticalAlignment="Center"
+Content="{TemplateBinding ComboBox.SelectionBoxItem}"
+ContentTemplate="{TemplateBinding ComboBox.SelectionBoxItemTemplate}"
+ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" />
+                        <TextBox Name="PART_EditableTextBox" Margin="3, 3, 23, 3"
+IsReadOnly="{TemplateBinding IsReadOnly}"
+Visibility="Hidden" Background="Transparent"
+HorizontalAlignment="Left" VerticalAlignment="Center"
+Focusable="True"  Foreground="AntiqueWhite">
+                            <TextBox.Template>
+                                <ControlTemplate TargetType="TextBox" >
+                                    <Border Name="PART_ContentHost" Focusable="False"  />
+                                </ControlTemplate>
+                            </TextBox.Template>
+                        </TextBox>
+                        <!-- Popup showing items -->
+                        <Popup Name="Popup" Placement="Bottom"
+Focusable="False" AllowsTransparency="True"
+IsOpen="{TemplateBinding ComboBox.IsDropDownOpen}"
+PopupAnimation="Slide">
+                            <Grid Name="DropDown" SnapsToDevicePixels="True"
+MinWidth="{TemplateBinding FrameworkElement.ActualWidth}"
+MaxHeight="{TemplateBinding ComboBox.MaxDropDownHeight}">
+                                <Border Name="DropDownBorder" Background="#EF111122" Margin="0, 1, 0, 0"
+CornerRadius="0" BorderThickness="1,1,1,1"
+BorderBrush="{StaticResource ComboBoxNormalBorderBrush}"/>
+                                <ScrollViewer Margin="4" SnapsToDevicePixels="True" Background="#FF111122">
+                                    <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" />
+                                </ScrollViewer>
+                            </Grid>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ItemsControl.HasItems" Value="False">
+                            <Setter Property="FrameworkElement.MinHeight" TargetName="DropDownBorder" Value="95"/>
+                        </Trigger>
+                        <Trigger Property="UIElement.IsEnabled" Value="False">
+                            <Setter Property="TextElement.Foreground" Value="AntiqueWhite"/>
+                        </Trigger>
+                        <Trigger Property="ItemsControl.IsGrouping" Value="True">
+                            <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
+                        </Trigger>
+                        <Trigger Property="ComboBox.IsEditable" Value="True">
+                            <Setter Property="KeyboardNavigation.IsTabStop" Value="False"/>
+                            <Setter Property="UIElement.Visibility" TargetName="PART_EditableTextBox" Value="Visible"/>
+                            <Setter Property="UIElement.Visibility" TargetName="ContentSite" Value="Hidden"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="ComboBoxItem">
+        <Setter Property="Foreground" Value="AntiqueWhite"/>
+    </Style>
+</ResourceDictionary>

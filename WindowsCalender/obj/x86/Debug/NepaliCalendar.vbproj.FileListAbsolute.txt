@@ -1,0 +1,8 @@
+F:\My Projects\WindowsCalender\WindowsCalender\bin\Debug\NepaliCalender.exe.config
+F:\My Projects\WindowsCalender\WindowsCalender\obj\x86\Debug\NepaliCalender.exe
+F:\My Projects\WindowsCalender\WindowsCalender\obj\x86\Debug\NepaliCalender.xml
+F:\My Projects\WindowsCalender\WindowsCalender\obj\x86\Debug\NepaliCalender.pdb
+D:\GitHub\WindowsCalender\WindowsCalender\WindowsCalender\bin\Debug\NepaliCalender.exe.config
+D:\GitHub\WindowsCalender\WindowsCalender\WindowsCalender\obj\x86\Debug\NepaliCalender.exe
+D:\GitHub\WindowsCalender\WindowsCalender\WindowsCalender\obj\x86\Debug\NepaliCalender.xml
+D:\GitHub\WindowsCalender\WindowsCalender\WindowsCalender\obj\x86\Debug\NepaliCalender.pdb

@@ -1,0 +1,207 @@
+﻿<Window x:Class="WindowsCalender.About"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="About" Height="240" Width="380"  AllowsTransparency="True" Topmost="True"
+    WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False">
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Offset="0" Color="#CC000033"/>
+            <GradientStop Offset="1" Color="#CC000011"/>
+        </LinearGradientBrush>
+    </Window.Background>
+    <Window.Resources>
+        <ControlTemplate x:Key="MenuTemplate" TargetType="{x:Type Button}">
+            <ControlTemplate.Resources>
+                <Storyboard x:Key="MouseOverButtonEffect">
+                    <ThicknessAnimation Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="(Control.Margin)"
+                     Duration="0:0:0.05" FillBehavior="Stop" From="0,0,0,0" To="4,4,4,4" AutoReverse="True" />
+                </Storyboard>
+            </ControlTemplate.Resources>
+            <Grid x:Name="StealthButtonOuterGrid1">
+                <Border x:Name="ButtonBorder" CornerRadius="8,8,8,8" Margin="0,0,0,0" Background="Transparent" Opacity=".01" BorderThickness="1" BorderBrush="Black">
+                </Border>
+                <Border x:Name="ButtonBorderFill" CornerRadius="8,8,8,8" Margin="0,0,0,0" Opacity=".01" BorderThickness="1">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint=".1,.0" StartPoint=".1,3">
+                            <GradientStop Color="#FF1100FF" Offset="0"/>
+                            <GradientStop Color="#FF1100FF" Offset="0.5"/>
+                            <GradientStop Color="#FF1100FF" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                </Border>
+                <Border x:Name="ButtonContent" Margin="0,0,0,0"  HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Label x:Name="ContentPresenterLabel" Foreground="White" Opacity="1" Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <ContentPresenter Height="Auto" Width="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" FlowDirection="LeftToRight" OverridesDefaultStyle="True"></ContentPresenter>
+                    </Label>
+                </Border>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.Setters>
+                        <Setter Property="Opacity" TargetName="ButtonBorderFill" Value="1"></Setter>
+                        <Setter Property="Button.BitmapEffect" TargetName="ButtonBorder">
+                            <Setter.Value>
+                                <OuterGlowBitmapEffect GlowColor="Gray" GlowSize="2" Opacity="0.75"></OuterGlowBitmapEffect>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger.Setters>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter TargetName="ButtonBorderFill" Property="RenderTransform" >
+                        <Setter.Value>
+                            <TranslateTransform Y="1" />
+                        </Setter.Value>
+                    </Setter>
+                    <Setter TargetName="ButtonBorderFill" Property="Background" Value="#FFFF0011" />
+                </Trigger>
+                <EventTrigger RoutedEvent="Grid.MouseEnter" SourceName="StealthButtonOuterGrid1">
+                    <BeginStoryboard Storyboard="{StaticResource MouseOverButtonEffect}"/>
+                </EventTrigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <Style x:Key="mnuButton" TargetType="{x:Type Button}">
+            <Setter Property="Template" Value="{StaticResource MenuTemplate}"/>
+        </Style>
+
+    </Window.Resources>
+    <Grid Opacity="0.8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="3" Background="#AA000000" MouseDown="Border_MouseDown">
+            <Label Foreground="AliceBlue" Content="About" HorizontalAlignment="Left" FontSize="18" VerticalAlignment="Center"/>
+        </Border>
+        <Button VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Style="{StaticResource mnuButton}" Click="Button_Click">
+            X
+        </Button>
+        <Grid Grid.Row="2"  Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="88"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions >
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="115"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.ColumnSpan="2" BorderThickness="0,0,0,.4" BorderBrush="BurlyWood" Background="Transparent">
+                <Label Grid.ColumnSpan="2" x:Name="Caption" VerticalAlignment="Top" HorizontalAlignment="Center" FontFamily="Arial" FontSize="16" Foreground="BurlyWood">
+                    Nepali Calendar
+                </Label>
+            </Border>
+            <Border Grid.Column="1">
+                <Label VerticalAlignment="Bottom"  HorizontalAlignment="Right" FontFamily="Arial" FontSize="10" Foreground="RosyBrown"  >
+                    Version: 1.0
+                </Label>
+            </Border>
+
+            <Label   FontFamily="Calibri"  Grid.Row="1" Height="115" Grid.ColumnSpan="2" Foreground="AntiqueWhite" >
+                <StackPanel >
+                    <TextBlock TextWrapping="Wrap" FontSize="11" FontWeight="ExtraLight" >
+                    Nepali Calendar is utility software, basically design for Windows which supports the .NET Framework. It is monthly based calendar included both AD and BS.
+                    The Date Converter embaded in this system can easily convert A.B to B.S and vice versa.
+                    </TextBlock>
+                    <TextBlock/>
+                    <TextBlock TextWrapping="Wrap" FontSize="11" FontWeight="ExtraLight" >
+                     This is the free software. Anybody can download the application and use it.
+                     It is warmly welcome for any comment and suggestion.
+                    </TextBlock>
+                </StackPanel>
+            </Label>
+            <Grid Grid.Row="2" x:Name="lblDetail" Grid.ColumnSpan="2" Height="Auto" Canvas.Top="100">
+                <Grid.RowDefinitions >
+                    <RowDefinition Height="3"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="3"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="88"/>
+                </Grid.ColumnDefinitions>
+            <Border Grid.RowSpan="2" CornerRadius="4,4,4,4" Height="20" Width="20" HorizontalAlignment="Left">
+     
+                        <!--<Button x:Name="TestButton" Height="10"/>-->
+                            <!--<Button.Triggers>
+                                <EventTrigger RoutedEvent="Button.Click">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation   
+            Storyboard.TargetName="theTransform"  
+            Storyboard.TargetProperty="(RotateTransform.Angle)"   
+            From="0" To="360" Duration="0:0:5" AutoReverse="True"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Button.Triggers>
+                            Start Animation
+                        </Button>
+                        --><!--<Popup IsOpen="{Binding ElementName=PCheckBox,Path=IsChecked}"   
+       PlacementTarget="{Binding ElementName=PCheckBox}"--><!--              
+      <Popup IsOpen="True" AllowsTransparency="True"  
+       PopupAnimation="Slide"  
+       HorizontalOffset="150"  
+       VerticalOffset="100">
+                            <Canvas Width="100" Height="100" Background="Green" Margin="150">
+                                <Canvas.RenderTransform>
+                                    <RotateTransform x:Name="theTransform" />
+                                </Canvas.RenderTransform>
+                                <TextBlock TextWrapping="Wrap" Foreground="LightGray">  
+      Rotating Popup
+                                </TextBlock>
+                            </Canvas>
+                        </Popup>-->
+
+                        <Button Height="20" Click="Button_Click_1" Style="{StaticResource mnuButton}">
+                        <Grid Height="20" Width="20" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Label Height="20" Width="20" x:Name="ContentPresenterLabel" FontSize="12" FontFamily="Webdings" Foreground="AntiqueWhite" Opacity="1"  HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Label.RenderTransform>
+                                    <RotateTransform Angle="0"/>
+                                </Label.RenderTransform>
+                            </Label>
+                        </Grid>
+                    </Button>
+                    </Border>
+            </Grid>
+            <Grid x:Name="myDetial" Height="100" Grid.Row="3" Grid.ColumnSpan="3" Grid.Column="0" Background="#AA000000">
+                <Grid.ColumnDefinitions >
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="95"/>
+                </Grid.ColumnDefinitions>
+                <Border  Grid.Column="1" Grid.Row="3" Background="Transparent" BorderThickness="1,1,1,1" BorderBrush="AntiqueWhite" CornerRadius="2,2,2,2">
+                    <Image Opacity="1" Stretch="Fill" Source="/NepaliCalender;component/Images/bin.jpg"/>
+                </Border>
+                <StackPanel x:Name="stkDetail" Grid.Row="3" Height="100">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="22"/>
+                        <RowDefinition Height="22"/>
+                        <RowDefinition Height="22"/>
+                    </Grid.RowDefinitions>
+                        <Border BorderThickness="0,0,0,.2" Margin="0,0,0,0" BorderBrush="AntiqueWhite" >
+                        <Label FontFamily="Calibri" FontSize="14" Foreground="AntiqueWhite"  HorizontalAlignment="Left" VerticalAlignment="Top">
+                            Developed By:
+                        </Label>
+                    </Border>
+                    <Label Grid.Row="1" Grid.RowSpan="4" FontFamily="Calibri" FontSize="10" FontStyle="Italic" Foreground="WhiteSmoke"  HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <TextBlock TextWrapping="Wrap" Text="Binod Shyama                                                                                                                                                                                                        Contact: 9860051313                                                                                              Email: bin7shyama@yahoo.com                                                    bin7shyama@gmail.com ">
+                            </TextBlock>
+                    </Label>
+
+                </Grid>
+            </StackPanel>
+        </Grid>    
+        </Grid>
+        <Border Grid.Row="3" Grid.ColumnSpan="3" BorderBrush="AntiqueWhite" BorderThickness="0,0,0,.4" VerticalAlignment="Center"/>
+    </Grid>
+</Window>

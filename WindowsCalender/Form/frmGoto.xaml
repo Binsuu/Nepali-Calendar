@@ -1,0 +1,84 @@
+﻿<Window x:Class="WindowsCalender.frmGoto"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="frmGoto" Height="161.134" Width="443.67"
+    AllowsTransparency="True"
+    Topmost="True" 
+    ShowInTaskbar="False"
+    WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize">
+    <Window.Resources>
+        <Style x:Key="mnuButton" TargetType="{x:Type Button}">
+            <Setter Property="Template" Value="{StaticResource MenuTemplate}"/>
+        </Style>
+    </Window.Resources>
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Offset="0" Color="#ED000011"/>
+            <GradientStop Offset="1" Color="#CC000011"/>
+        </LinearGradientBrush>
+    </Window.Background>
+    <Grid>
+        <Grid.RowDefinitions >
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions >
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.RowSpan="3" Grid.ColumnSpan="3">
+            <Border BorderBrush="AntiqueWhite" BorderThickness="0,0,0,.1" MouseDown="Me_Drag">
+                <Border.Background >
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                        <GradientStop Offset="0" Color="#DF000003"/>
+                        <GradientStop Offset="1" Color="#EF000011"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Label Content="Go To" Foreground="AliceBlue" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+            </Border>
+        </Grid>
+        <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" BorderBrush="AntiqueWhite" Background="Transparent" BorderThickness="0,0,0,.2"/>
+        <Button Grid.Row="1" Grid.Column="1" Content="X" HorizontalAlignment="Right" Width="20" Style="{StaticResource mnuButton}" Click="Button_Click"/>
+        <Border Grid.Row="3" Grid.Column="1" BorderBrush="AntiqueWhite" Background="Transparent"  BorderThickness="0,0,0,0.1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <RadioButton x:Name="RBEng" Content="A.D Date" Foreground="AntiqueWhite" HorizontalAlignment="center" VerticalAlignment="Center" Click="chkAD"/>
+                <RadioButton x:Name="RBNEp" Grid.Column="2" Content="B.S Date" Foreground="AntiqueWhite" HorizontalAlignment="center" VerticalAlignment="Center" Click="chkBS"/>
+            </Grid>
+        </Border>
+        <Border BorderBrush="AntiqueWhite" Grid.Row="5" Grid.Column="1"  BorderThickness="0,0,0,0" Background="Transparent">
+            <Grid>
+                <Grid.RowDefinitions >
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label x:Name="lblYear" Grid.Row="0" Content="Year" Foreground="AntiqueWhite" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <Label x:Name="lblMonth" Grid.Row="0" Grid.Column="4" Content="Month" Foreground="AntiqueWhite" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <ComboBox Style="{StaticResource ComboBoxFlatStyle}" x:Name="CboYear" Grid.Row="0" Grid.Column="2"/>
+                <ComboBox  Style="{StaticResource ComboBoxFlatStyle}" x:Name="CboMonth" Grid.Row="0" Grid.Column="6"/>
+            </Grid>
+        </Border>
+        <Border Grid.Row="7" Grid.ColumnSpan="2"  BorderBrush="AntiqueWhite" BorderThickness="0,0.2,0,0">
+            <Button x:Name="BtnLoad" Content="OK" Width="60" HorizontalAlignment="Right" Style="{StaticResource mnuButton}" Margin="0,10,0,0" Height="25" VerticalAlignment="Top" />
+        </Border>
+    </Grid>
+</Window>
